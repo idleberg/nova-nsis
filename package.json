@@ -1,0 +1,23 @@
+{
+	"private": true,
+	"scripts": {
+		"build:source": "tsdown",
+		"build:treesitter": "./build.sh",
+		"build": "concurrently --prefix-colors cyan,magenta npm:build:*",
+		"dev": "tsdown --watch",
+		"format": "oxfmt",
+		"lint": "oxlint",
+		"postbuild:treesitter": "codesign -s - ./NSIS.novaextension/Syntaxes/libtree-sitter-nsis.dylib"
+	},
+	"dependencies": {
+		"@nsis/dent": "^0.13.0"
+	},
+	"devDependencies": {
+		"concurrently": "^10.0.3",
+		"oxfmt": "^0.58.0",
+		"oxlint": "^1.73.0",
+		"tree-sitter-nsis": "^0.3.0",
+		"tsdown": "^0.22.7",
+		"typescript": "^7.0.2"
+	}
+}

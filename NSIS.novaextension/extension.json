@@ -1,0 +1,186 @@
+{
+	"identifier": "com.idleberg.nsis",
+	"name": "NSIS",
+	"organization": "idleberg",
+	"description": "Syntax highlighting, diagnostics and formatting for NSIS (Nullsoft Scriptable Install System) scripts.",
+	"version": "0.1.0",
+	"categories": ["languages", "completions", "formatters", "issues"],
+	"license": "MIT",
+	"repository": "https://github.com/idleberg/nova-nsis",
+	"bugs": "https://github.com/idleberg/nova-nsis/issues",
+	"funding": "https://buymeacoffee.com/idleberg",
+	"min_runtime": "10.0",
+
+	"main": "main.cjs",
+
+	"entitlements": {
+		"process": true
+	},
+
+	"activationEvents": ["onLanguage:nsis"],
+
+	"config": [
+		{
+			"key": "nsis.pathToMakensis",
+			"title": "Path to makensis",
+			"description": "The path to the makensis compiler. Leave empty to detect from PATH.",
+			"type": "path",
+			"placeholder": "Automatic"
+		},
+		{
+			"title": "Validation",
+			"type": "section",
+			"children": [
+				{
+					"key": "nsis.validate",
+					"title": "Validate",
+					"description": "Whether automatic validation of open NSIS files should be performed, and when.",
+					"type": "enum",
+					"values": [
+						["off", "Disabled"],
+						["onSave", "On Save"],
+						["onChange", "On Change"]
+					],
+					"default": "onSave"
+				},
+				{
+					"key": "nsis.preprocessMode",
+					"title": "Preprocess Mode",
+					"description": "Controls whether makensis runs in preprocess-only mode for validation.",
+					"type": "enum",
+					"values": [
+						["none", "None"],
+						["ppo", "PPO"],
+						["safeppo", "Safe PPO"]
+					],
+					"default": "none"
+				}
+			]
+		},
+		{
+			"title": "Formatting",
+			"type": "section",
+			"children": [
+				{
+					"key": "nsis.format",
+					"title": "Format on Save",
+					"description": "Whether NSIS files should be automatically formatted.",
+					"type": "enum",
+					"values": [
+						["off", "Disabled"],
+						["onSave", "On Save"]
+					],
+					"default": "onSave"
+				},
+				{
+					"key": "nsis.format.useTabs",
+					"title": "Use Tabs",
+					"description": "Indent with tabs instead of spaces.",
+					"type": "boolean",
+					"default": true
+				},
+				{
+					"key": "nsis.format.indentSize",
+					"title": "Indent Size",
+					"description": "Number of spaces per indentation level (when not using tabs).",
+					"type": "number",
+					"default": 2,
+					"min": 1,
+					"max": 16
+				},
+				{
+					"key": "nsis.format.printWidth",
+					"title": "Print Width",
+					"description": "Maximum line length before wrapping.",
+					"type": "number",
+					"default": 120,
+					"min": 40,
+					"max": 320
+				},
+				{
+					"key": "nsis.format.singleQuote",
+					"title": "Single Quotes",
+					"description": "Use single quotes instead of double quotes for strings.",
+					"type": "boolean",
+					"default": false
+				},
+				{
+					"key": "nsis.format.trimEmptyLines",
+					"title": "Trim Empty Lines",
+					"description": "Remove trailing whitespace from empty lines.",
+					"type": "boolean",
+					"default": true
+				},
+				{
+					"key": "nsis.format.endOfLine",
+					"title": "End of Line",
+					"description": "Line ending style..",
+					"type": "enum",
+					"values": [
+						["auto", "Auto"],
+						["lf", "LF"],
+						["crlf", "CRLF"]
+					],
+					"default": "auto"
+				}
+			]
+		}
+	],
+
+	"taskTemplates": {
+		"makensis": {
+			"name": "makensis",
+			"description": "Build the current NSIS script with makensis.",
+			"tasks": {
+				"build": {
+					"resolve": "nsis",
+					"data": "build"
+				}
+			},
+			"config": [
+				{
+					"key": "nsis.task.verbosity",
+					"title": "Verbosity",
+					"description": "Controls the output verbosity level.",
+					"type": "enum",
+					"values": [
+						["4", "All (4)"],
+						["3", "No script (3)"],
+						["2", "No info (2)"],
+						["1", "No warnings (1)"],
+						["0", "None (0)"]
+					],
+					"default": "4"
+				},
+				{
+					"key": "nsis.task.treatWarningsAsErrors",
+					"title": "Treat Warnings as Errors",
+					"description": "Enables the -WX flag.",
+					"type": "boolean",
+					"default": false
+				},
+				{
+					"key": "nsis.task.noConfig",
+					"title": "No Config",
+					"description": "Disables inclusion of nsisconf.nsh.",
+					"type": "boolean",
+					"default": false
+				},
+				{
+					"key": "nsis.task.noCD",
+					"title": "No CD",
+					"description": "Disables changing the current directory to the .nsi file location.",
+					"type": "boolean",
+					"default": false
+				},
+				{
+					"key": "nsis.task.customArguments",
+					"title": "Custom Arguments",
+					"description": "Additional arguments passed to makensis (e.g. -DFOO=bar).",
+					"type": "string",
+					"placeholder": "-Ddefine=value -Xscriptcmd"
+				}
+			]
+		}
+	}
+}

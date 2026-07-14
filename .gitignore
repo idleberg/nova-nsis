@@ -1,0 +1,4 @@
+.nova
+node_modules/
+
+*.nsi
