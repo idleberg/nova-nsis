@@ -6,8 +6,8 @@
 
 - Tree-sitter-based syntax highlighting
 - Code folding for functions, sections, macros, and preprocessor blocks
-- Symbol navigation (functions, sections, macros, variables)
-- Comment toggling (`;`, `#`, `/* */`)
+- Symbol navigation
+- Comment toggling
 - Bracket and quote auto-pairing
 - Issue highlighting
 - Build task assistant
