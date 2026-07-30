@@ -1,23 +1,16 @@
-import { NsisBuildAssistant } from './build';
-import { NsisFormatter } from './format';
-import { NsisIssueAssistant } from './issues';
+import { NsisBuildAssistant } from './build.ts';
+import { NsisFormatter } from './format.ts';
+import { NsisLanguageServer } from './lsp.ts';
 
-let assistant: Disposable | null = null;
 let taskAssistant: Disposable | null = null;
-const formatter = new NsisFormatter();
+// Nova invokes onDidChange callbacks once on subscription, which would launch
+// the server once per observed key before activate() gets to start it.
+let activated = false;
+const languageServer = new NsisLanguageServer();
+const formatter = new NsisFormatter(() => languageServer.client);
 
-function registerAssistant(): void {
-	if (assistant) {
-		assistant.dispose();
-		assistant = null;
-	}
-
-	const event = (nova.config.get('nsis.validate') as string | null) ?? 'onSave';
-	if (event === 'off') {
-		return;
-	}
-
-	assistant = nova.assistants.registerIssueAssistant('nsis', new NsisIssueAssistant(), { event });
+function restartLanguageServer(): void {
+	if (activated) languageServer.start();
 }
 
 function registerFormatter(): void {
@@ -29,8 +22,7 @@ function registerFormatter(): void {
 	}
 }
 
-export function activate(): void {
-	registerAssistant();
+export async function activate(): Promise<void> {
 	registerFormatter();
 
 	taskAssistant = nova.assistants.registerTaskAssistant(new NsisBuildAssistant(), {
@@ -38,29 +30,38 @@ export function activate(): void {
 		name: 'NSIS',
 	});
 
-	nova.config.onDidChange('nsis.validate', () => registerAssistant());
-	nova.config.onDidChange('nsis.pathToMakensis', () => registerAssistant());
-	nova.config.onDidChange('nsis.preprocessMode', () => registerAssistant());
+	// The server only reads its settings from the initialize request, so every
+	// setting it consumes has to go through a restart.
+	for (const key of [
+		'nsis.languageServer.enabled',
+		'nsis.languageServer.path',
+		'nsis.validate',
+		'nsis.pathToMakensis',
+		'nsis.preprocessMode',
+		'nsis.format.printWidth',
+		'nsis.format.singleQuote',
+		'nsis.format.trimEmptyLines',
+		'nsis.format.endOfLine',
+	]) {
+		nova.config.onDidChange(key, restartLanguageServer);
+	}
 
-	nova.config.onDidChange('nsis.format', () => registerFormatter());
-	nova.config.onDidChange('nsis.format.useTabs', () => registerFormatter());
-	nova.config.onDidChange('nsis.format.indentSize', () => registerFormatter());
-	nova.config.onDidChange('nsis.format.printWidth', () => registerFormatter());
-	nova.config.onDidChange('nsis.format.singleQuote', () => registerFormatter());
-	nova.config.onDidChange('nsis.format.trimEmptyLines', () => registerFormatter());
-	nova.config.onDidChange('nsis.format.endOfLine', () => registerFormatter());
+	nova.config.onDidChange('nsis.format', () => {
+		if (activated) registerFormatter();
+	});
+
+	await languageServer.start();
+	activated = true;
 }
 
 export function deactivate(): void {
-	if (assistant) {
-		assistant.dispose();
-		assistant = null;
-	}
+	activated = false;
 
 	if (taskAssistant) {
 		taskAssistant.dispose();
 		taskAssistant = null;
 	}
 
+	languageServer.stop();
 	formatter.stop();
 }

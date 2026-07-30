@@ -9,9 +9,23 @@
 - Symbol navigation
 - Comment toggling
 - Bracket and quote auto-pairing
-- Issue highlighting
 - Build task assistant
-- Code formatting
+
+With the [nsis-lsp](https://github.com/idleberg/nsis-lsp) language server installed, you also get:
+
+- Completions for instructions, preprocessor directives and variables
+- Documentation on hover
+- Signature help
+- Jump to definition for defines, macros and functions
+- Code actions
+- Diagnostics from `makensis`
+- Code formatting, on save
+
+## Requirements
+
+Nova 14 or later.
+
+The [nsis-lsp](https://github.com/idleberg/nsis-lsp) language server is required for diagnostics and formatting — there are no built-in fallbacks. Install it with `npm i -g @nsis/lsp` or `cargo install nsis-lsp`; the extension picks it up from your `PATH`, or you can point at it explicitly in the extension settings.
 
 ## Installation
 
