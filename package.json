@@ -6,14 +6,14 @@
 		"build:treesitter": "./build.sh",
 		"build": "concurrently --prefix-colors cyan,magenta npm:build:*",
 		"dev": "tsdown --watch",
-		"format": "oxfmt",
+		"format": "oxfmt --no-error-on-unmatched-pattern",
 		"lint": "oxlint",
 		"postbuild:treesitter": "codesign -s - ./NSIS.novaextension/Syntaxes/libtree-sitter-nsis.dylib"
 	},
 	"devDependencies": {
-		"concurrently": "^10.0.4",
-		"oxfmt": "^0.61.0",
-		"oxlint": "^1.76.0",
+		"concurrently": "^10.0.5",
+		"oxfmt": "^0.65.0",
+		"oxlint": "^1.80.0",
 		"tree-sitter-nsis": "^0.4.0",
 		"tsdown": "^0.22.14",
 		"typescript": "^7.0.2"

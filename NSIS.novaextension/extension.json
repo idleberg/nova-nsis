@@ -3,7 +3,7 @@
 	"name": "NSIS",
 	"organization": "idleberg",
 	"description": "Syntax highlighting, completions, diagnostics and formatting for NSIS (Nullsoft Scriptable Install System) scripts.",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"categories": ["languages", "completions", "formatters", "issues"],
 	"license": "MIT",
 	"repository": "https://github.com/idleberg/nova-nsis",
