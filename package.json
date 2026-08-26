@@ -6,8 +6,8 @@
 		"build:treesitter": "./build.sh",
 		"build": "concurrently --prefix-colors cyan,magenta npm:build:*",
 		"dev": "tsdown --watch",
-		"format": "oxfmt --no-error-on-unmatched-pattern",
-		"lint": "oxlint",
+		"format": "oxfmt",
+		"lint": "oxlint --no-error-on-unmatched-pattern",
 		"postbuild:treesitter": "codesign -s - ./NSIS.novaextension/Syntaxes/libtree-sitter-nsis.dylib"
 	},
 	"devDependencies": {
