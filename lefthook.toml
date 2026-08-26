@@ -1,5 +1,5 @@
 [pre-commit.commands.lint]
-run = "pnpm exec oxlint --fix {staged_files}"
+run = "pnpm exec oxlint --fix {staged_files} --no-error-on-unmatched-pattern"
 glob = "*.{js,mjs,cjs,ts,mts,cts,jsx,tsx,astro,svelte,vue}"
 stage_fixed = true
 
