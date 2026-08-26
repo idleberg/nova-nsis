@@ -14,6 +14,7 @@ interface InitializationOptions {
 		path: string;
 	};
 	formatter: {
+		comment_style?: string;
 		end_of_line?: string;
 		print_width?: number;
 		single_quote?: boolean;
@@ -130,6 +131,10 @@ function getFormatterOptions(): InitializationOptions['formatter'] {
 	// 'auto' (the default) is omitted, letting the server detect from the file
 	const endOfLine = nova.config.get('nsis.format.endOfLine');
 	if (endOfLine === 'lf' || endOfLine === 'crlf') options.end_of_line = endOfLine;
+
+	// 'preserve' (the default) is omitted
+	const commentStyle = nova.config.get('nsis.format.commentStyle');
+	if (commentStyle === 'hash' || commentStyle === 'semi') options.comment_style = commentStyle;
 
 	return options;
 }

@@ -125,6 +125,18 @@
 						["crlf", "CRLF"]
 					],
 					"default": "auto"
+				},
+				{
+					"key": "nsis.format.commentStyle",
+					"title": "Comment Style",
+					"description": "Style of comments.",
+					"type": "enum",
+					"values": [
+						["preserve", "Preserve"],
+						["hash", "Hash (#)"],
+						["semi", "Semicolon (;)"]
+					],
+					"default": "preserve"
 				}
 			]
 		}

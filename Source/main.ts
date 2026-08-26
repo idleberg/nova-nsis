@@ -42,6 +42,7 @@ export async function activate(): Promise<void> {
 		'nsis.format.singleQuote',
 		'nsis.format.trimEmptyLines',
 		'nsis.format.endOfLine',
+		'nsis.format.commentStyle',
 	]) {
 		nova.config.onDidChange(key, restartLanguageServer);
 	}
